@@ -9,7 +9,9 @@ import 'bootstrap/dist/css/bootstrap.css'
 import N3Components from 'N3-components'
 import 'N3-components/dist/index.min.css'
 import 'N3-components/src/style/default.less'
-
+import VueAxios from 'vue-axios';
+import axios from 'axios';
+Vue.use(VueAxios, axios);
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
