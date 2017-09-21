@@ -1,25 +1,40 @@
 <template>
   <div class="hello row">
-    <n3-form ref='form' class="hello-form col-md-6">
+    <div class="col-md-6">
+      <el-date-picker
+        v-model="event.datetime"
+        type="datetime">
+      </el-date-picker>
+    </div>
+
+    <!--<n3-form ref='form' class="hello-form col-md-6">
+      <h1>Add event</h1>
       <n3-form-item need>
-        <label>Description</label>
-        <n3-input name="description" v-model="event.description" :rules="[{type:'required'}]">
+        <label>Title</label>
+        <n3-input name="title" v-model="event.title" :rules="[{type:'required'}]">
         </n3-input>
       </n3-form-item>
-      <n3-form-item need>
-        <label>Datetime</label>
-        <n3-datetimepicker v-model="event.datetime" :readonly="false" format="yyyy-MM-dd hh:mm"></n3-datetimepicker>
+      <n3-form-item>
+        <label>Description</label>
+        <n3-textarea name="description" v-model="event.description">
+        </n3-textarea>
       </n3-form-item>
-      <!--      <n3-select v-model="selected" :options="someOptions">
-            </n3-select>-->
       <n3-form-item need>
-        <label>Period</label>
+        <label>Start from</label>
+        <el-date-picker
+          v-model="event.datetime"
+          type="datetime"
+          placeholder="Select date and time">
+        </el-date-picker>
+      </n3-form-item>
+      <n3-form-item need>
+        <label>Period (days)</label>
         <n3-input-number v-model="event.period"></n3-input-number>
       </n3-form-item>
       <n3-form-item>
         <n3-button type="primary" @click.native="submit">submit</n3-button>
       </n3-form-item>
-    </n3-form>
+    </n3-form>-->
     <div class="col-md-6">
       <h1>Plans for the day</h1>
       <ul class="list-group">
@@ -29,25 +44,17 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import moment from 'moment'
+  import moment from 'moment';
   export default {
     name: 'hello',
     data () {
       return {
-        someOptions: [
-          {value: 'apple', label: 'Apple'},
-          {value: 'banana', label: 'Banana'},
-          {value: 'cherry', label: 'Cherry'},
-          {value: 'orange', label: 'Orange'},
-          {value: 'grape', label: 'Grape'}
-        ],
         event: {
           description: '',
-          period: '',
-          datetime: moment().format('YYYY-MM-DD hh:mm')
+          period: 0,
+          datetime: ''
         },
-        events: [],
-        selected: ''
+        events: []
       }
     },
     created: function () {

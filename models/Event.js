@@ -3,6 +3,9 @@ var Schema = mongoose.Schema;
 
 // Define collection and schema for Items
 var Event = new Schema({
+  title: {
+    type: String
+  },
   description: {
     type: String
   },
@@ -11,6 +14,9 @@ var Event = new Schema({
   },
   datetime: {
     type: Date
+  },
+  is_done: {
+    type: Boolean, default: false
   }
 },{
   collection: 'events'

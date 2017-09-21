@@ -3,19 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueAxios from 'vue-axios'
+import axios from 'axios'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+
 import 'bootstrap/dist/css/bootstrap.css'
-import N3Components from 'N3-components'
-import 'N3-components/dist/index.min.css'
-import 'N3-components/src/style/default.less'
-import VueAxios from 'vue-axios';
-import axios from 'axios';
+import locale from 'element-ui/lib/locale/lang/en'
 Vue.use(VueAxios, axios);
+Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false
 
-Vue.use(BootstrapVue)
-Vue.use(N3Components, 'en')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

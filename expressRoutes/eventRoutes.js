@@ -6,8 +6,7 @@ var Event = require('../models/Event');
 var moment = require('moment');
 // Defined store route
 eventRoutes.route('/add').post(function (req, res) {
-  console.log(req.body);
-  req.body.datetime = new Date(req.body.datetime).toISOString();
+  req.body.datetime = moment(req.body.datetime).add(req.body.period, 'days');
   var event = new Event(req.body);
   event.save()
     .then(event => {
@@ -25,15 +24,8 @@ eventRoutes.route('/').get(function (req, res) {
 
   var start = moment().startOf('day');
   var end = moment().endOf('day');
-/*  Event.aggregate([
-    {
-      "$addFields": {
-        "isGrade1Greater": { "$cmp": [ "$Grade1", "$Grade2" ] }
-      }
-    },
-    { "$match": { "isGrade1Greater": 1 } }
-  ]);*/
-  Event.find({"datetime": {$gte: new Date((new Date().getTime() - ("this.period" * 24 * 60 * 60 * 1000))), $lt: end}},
+
+  Event.find({"datetime": {$lte: start}, "is_done": false},
     function (err, events) {
       if (err) {
         console.log(err);
