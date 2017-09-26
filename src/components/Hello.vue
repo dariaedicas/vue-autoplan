@@ -5,9 +5,10 @@
       <ul class="list-group">
         <li class="list-group-item event-item" v-for="event in events"
             v-bind:class="{expired: new Date(event.datetime) < new Date(),
-            expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start }">
+            expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
+             active: event == newEvent}">
           <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
-                       @change="doneChange(event)"> {{ event.title }}</el-checkbox>
+                       @change="done(event)"> {{ event.title }}</el-checkbox>
           <div class="controls">
             <el-button class="el-icon-edit" @click="edit(event)"></el-button>
             <el-button class="el-icon-delete" @click="remove(event)"></el-button>
@@ -15,33 +16,34 @@
         </li>
       </ul>
     </div>
-      <el-form :model="event" :rules="rules" ref="event" label-position="top" class="col-md-4">
+      <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="col-md-4">
         <h1>Event</h1>
         <el-form-item label="Title" prop="title" required>
-          <el-input v-model="event.title"></el-input>
+          <el-input v-model="newEvent.title"></el-input>
         </el-form-item>
         <el-form-item label="Should be done by" prop="datetime" required>
-              <el-date-picker type="datetime" v-model="event.datetime"
+              <el-date-picker type="datetime" v-model="newEvent.datetime"
                               format="dd-MM-yyyy HH:mm"
                               :clearable="false"
                               :picker-options="{firstDayOfWeek: 1}"></el-date-picker>
         </el-form-item>
         <el-form-item label="Repeat every" prop="period">
-          <el-input-number v-model="event.period"></el-input-number>
+          <el-input-number v-model="newEvent.period"></el-input-number>
           days
         </el-form-item>
         <el-form-item label="Description" prop="description">
-          <el-input type="textarea" v-model="event.description"></el-input>
+          <el-input type="textarea" v-model="newEvent.description"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submit('event')">{{editing ? 'Update' : 'Create'}}</el-button>
-          <el-button  v-if="editing" type="warning" @click="cancel()">Cancel</el-button>
+          <el-button type="primary" @click="submit('formEvent')">{{editing ? 'Update' : 'Create'}}</el-button>
+          <el-button  v-if="editing" type="warning" @click="cancel(newEvent)">Cancel</el-button>
         </el-form-item>
       </el-form>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import moment from 'moment';
+  import Vue from 'vue';
   export default {
     name: 'hello',
     data () {
@@ -49,12 +51,13 @@
         start:  moment().startOf('day'),
         end: moment().endOf('day'),
         editing: false,
-        event: {
+        newEvent: {
           title: '',
           description: '',
           period: 0,
           datetime: new Date(moment().endOf('day'))
         },
+        selectedEvent: false,
         events: [],
         rules: {
           title: [
@@ -103,12 +106,14 @@
       },
       edit(event){
         event.datetime =new Date(event.datetime);
-        this.event = event;
+      //  this.newEvent = event;
+        this.selectedEvent = Vue.util.extend({}, event);
         this.editing = true;
       },
-      cancel(){
+      cancel(event){
         this.editing = false;
-        this.$refs['event'].resetFields();
+        this.newEvent  =  this.selectedEvent;
+       // this.$refs['formEvent'].resetFields();
       }
     }
   }
