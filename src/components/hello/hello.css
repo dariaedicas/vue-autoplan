@@ -1,3 +1,6 @@
+#app{
+  padding-top: 20px;
+}
 .event-title .el-checkbox__label{
   position: relative;
   overflow: hidden;
@@ -52,4 +55,23 @@
  }
 .controls{
   float: right;
+}
+.event-form{
+  background: url('../../assets/note.png') no-repeat;
+  background-size: 100%;
+  padding: 70px 40px 0px;
+}
+label{
+  margin-bottom: 0px;
+}
+.el-textarea__inner{
+  height: 80px;
+  resize: none;
+}
+.period{
+  margin-top: 50px;
+}
+.plans{
+  background: url('../../assets/clipboard.png') no-repeat;
+  background-size: 100%;
 }
