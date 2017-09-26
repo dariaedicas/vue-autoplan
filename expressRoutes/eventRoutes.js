@@ -25,7 +25,7 @@ eventRoutes.route('/').get(function (req, res) {
   var start = moment().startOf('day');
   var end = moment().endOf('day');
 
-  Event.find({"datetime": {$lte: start}, "is_done": false},
+  Event.find({"datetime": {$lte: end}, "is_done": false},
     function (err, events) {
       if (err) {
         console.log(err);
@@ -33,7 +33,7 @@ eventRoutes.route('/').get(function (req, res) {
       else {
         res.json(events);
       }
-    });
+    }).sort({ "datetime": 1 });
 });
 
 // Defined edit route

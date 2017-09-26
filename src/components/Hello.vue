@@ -1,46 +1,43 @@
 <template>
   <div class="hello row">
-    <div class="col-md-6">
-      <el-date-picker
-        v-model="event.datetime"
-        type="datetime">
-      </el-date-picker>
-    </div>
-
-    <!--<n3-form ref='form' class="hello-form col-md-6">
-      <h1>Add event</h1>
-      <n3-form-item need>
-        <label>Title</label>
-        <n3-input name="title" v-model="event.title" :rules="[{type:'required'}]">
-        </n3-input>
-      </n3-form-item>
-      <n3-form-item>
-        <label>Description</label>
-        <n3-textarea name="description" v-model="event.description">
-        </n3-textarea>
-      </n3-form-item>
-      <n3-form-item need>
-        <label>Start from</label>
-        <el-date-picker
-          v-model="event.datetime"
-          type="datetime"
-          placeholder="Select date and time">
-        </el-date-picker>
-      </n3-form-item>
-      <n3-form-item need>
-        <label>Period (days)</label>
-        <n3-input-number v-model="event.period"></n3-input-number>
-      </n3-form-item>
-      <n3-form-item>
-        <n3-button type="primary" @click.native="submit">submit</n3-button>
-      </n3-form-item>
-    </n3-form>-->
-    <div class="col-md-6">
+    <div class="col-md-8">
       <h1>Plans for the day</h1>
       <ul class="list-group">
-        <li class="list-group-item" v-for="event in events">{{ event.description }}</li>
+        <li class="list-group-item event-item" v-for="event in events"
+            v-bind:class="{expired: new Date(event.datetime) < new Date(),
+            expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start }">
+          <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
+                       @change="doneChange(event)"> {{ event.title }}</el-checkbox>
+          <div class="controls">
+            <el-button class="el-icon-edit" @click="edit(event)"></el-button>
+            <el-button class="el-icon-delete" @click="remove(event)"></el-button>
+          </div>
+        </li>
       </ul>
     </div>
+      <el-form :model="event" :rules="rules" ref="event" label-position="top" class="col-md-4">
+        <h1>Event</h1>
+        <el-form-item label="Title" prop="title" required>
+          <el-input v-model="event.title"></el-input>
+        </el-form-item>
+        <el-form-item label="Should be done by" prop="datetime" required>
+              <el-date-picker type="datetime" v-model="event.datetime"
+                              format="dd-MM-yyyy HH:mm"
+                              :clearable="false"
+                              :picker-options="{firstDayOfWeek: 1}"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="Repeat every" prop="period">
+          <el-input-number v-model="event.period"></el-input-number>
+          days
+        </el-form-item>
+        <el-form-item label="Description" prop="description">
+          <el-input type="textarea" v-model="event.description"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submit('event')">{{editing ? 'Update' : 'Create'}}</el-button>
+          <el-button  v-if="editing" type="warning" @click="cancel()">Cancel</el-button>
+        </el-form-item>
+      </el-form>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -49,12 +46,24 @@
     name: 'hello',
     data () {
       return {
+        start:  moment().startOf('day'),
+        end: moment().endOf('day'),
+        editing: false,
         event: {
+          title: '',
           description: '',
           period: 0,
-          datetime: ''
+          datetime: new Date(moment().endOf('day'))
         },
-        events: []
+        events: [],
+        rules: {
+          title: [
+            { required: true, message: 'Please input title', trigger: 'blur' },
+          ],
+          datetime: [
+            { type: 'date', required: true, message: 'Please pick a date and a time', trigger: 'change' }
+          ]
+        }
       }
     },
     created: function () {
@@ -64,16 +73,20 @@
       moment: function () {
         return moment()
       },
-      submit: function () {
-        var self = this;
-        this.$refs.form.validateFields(function (result) {
-          console.log(self.event, new Date(self.event.datetime).toISOString());
-          let uri = 'http://localhost:4000/events/add';
-          /*   self.event.datetime = new Date(self.event.datetime);*/
-          self.axios.post(uri, self.event).then((response) => {
-            console.log(response)
-          })
-        })
+      submit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let uri = 'http://localhost:4000/events/add';
+            this.axios.post(uri, this.event).then((response) => {
+              console.log(response);
+              this.$refs[formName].resetFields();
+              this.fetchItems();
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
       },
       fetchItems()
       {
@@ -81,6 +94,21 @@
         this.axios.get(uri).then((response) => {
           this.events = response.data;
         });
+      },
+      done(event){
+        console.log(event);
+      },
+      remove(event){
+
+      },
+      edit(event){
+        event.datetime =new Date(event.datetime);
+        this.event = event;
+        this.editing = true;
+      },
+      cancel(){
+        this.editing = false;
+        this.$refs['event'].resetFields();
       }
     }
   }
@@ -89,8 +117,4 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   @import './hello/hello.css';
-
-  .hello-form {
-    max-width: 300px;
-  }
 </style>
