@@ -6,7 +6,7 @@
         <li class="list-group-item event-item" v-for="event in events"
             v-bind:class="{expired: new Date(event.datetime) < new Date(),
             expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
-             active: event == newEvent}">
+             active: event == selectedEvent}">
           <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
                        @change="done(event)"> {{ event.title }}</el-checkbox>
           <div class="controls">
@@ -101,19 +101,34 @@
       done(event){
         console.log(event);
       },
-      remove(event){
-
-      },
       edit(event){
         event.datetime =new Date(event.datetime);
-      //  this.newEvent = event;
-        this.selectedEvent = Vue.util.extend({}, event);
+        this.newEvent = Vue.util.extend({}, event);
+        this.selectedEvent = event;
         this.editing = true;
       },
-      cancel(event){
+      cancel(){
         this.editing = false;
-        this.newEvent  =  this.selectedEvent;
-       // this.$refs['formEvent'].resetFields();
+        this.selectedEvent = false;
+          //  this.newEvent  =  this.selectedEvent;
+        this.$refs['formEvent'].resetFields();
+      },
+      remove(event) {
+        this.$confirm('This will delete the event '+event.title, 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: 'Delete completed'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Delete canceled'
+          });
+        });
       }
     }
   }
