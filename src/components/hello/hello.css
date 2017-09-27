@@ -1,12 +1,35 @@
-#app{
-  padding-top: 20px;
+@font-face {
+  font-family: 'comic_reliefregular';
+  src: url('../../assets/fonts/comicrelief-webfont.eot');
+  src: url('../../assets/fonts/comicrelief-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../../assets/fonts/comicrelief-webfont.woff2') format('woff2'),
+  url('../../assets/fonts/comicrelief-webfont.woff') format('woff'),
+  url('../../assets/fonts/comicrelief-webfont.ttf') format('truetype'),
+  url('../../assets/fonts/comicrelief-webfont.svg#comic_reliefregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face {
+  font-family: 'nautilus_pompiliusregular';
+  src: url('../../assets/fonts/nautilus-webfont.eot');
+  src: url('../../assets/fonts/nautilus-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../../assets/fonts/nautilus-webfont.woff2') format('woff2'),
+  url('../../assets/fonts/nautilus-webfont.woff') format('woff'),
+  url('../../assets/fonts/nautilus-webfont.ttf') format('truetype'),
+  url('../../assets/fonts/nautilus-webfont.svg#nautilus_pompiliusregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 .event-title .el-checkbox__label{
   position: relative;
   overflow: hidden;
   float: right;
   padding: 0 5px;
-  line-height: 22px;
+  line-height: 22px;font: 20px 'nautilus_pompiliusregular';
+  max-width: 440px;
 }
 .event-title  .el-checkbox__input{
   margin-right: 10px;
@@ -35,29 +58,31 @@
   -o-transition: all 0.0s ;
   transition: all 0.0s;
 }
-.event-item{
-  color: #3c763d;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
+.plans .list-group{
+  border: 15px solid rgba(125, 89, 49, 0.44);
+  max-height: 600px;
+  overflow: auto;
+  padding-bottom: 15px;
+}
+.list-group-item{
+/*  background-color: transparent;*/
+  border: none;
 }
 .expired{
   color: #a94442;
-  background-color: #ffdcdc;
-  border-color: #ffbfc9;
 }
 .expired_today{
   color: #8a6d3b;
-  background-color:rgb(255, 243, 147);
-  border-color: rgb(250, 235, 204);
 }
 .el-checkbox{
   color: inherit;
+  white-space: normal;
  }
 .controls{
   float: right;
 }
 .event-form{
-  background: url('../../assets/note.png') no-repeat;
+  background: url('../../assets/images/note.png') no-repeat;
   background-size: 100%;
   padding: 70px 40px 0px;
 }
@@ -72,6 +97,7 @@ label{
   margin-top: 50px;
 }
 .plans{
-  background: url('../../assets/clipboard.png') no-repeat;
+  background: url('../../assets/images/clipboard.png') 0px -5px no-repeat;
   background-size: 100%;
+  padding: 20% 5% 0;
 }

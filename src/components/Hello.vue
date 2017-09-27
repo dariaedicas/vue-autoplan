@@ -1,44 +1,46 @@
 <template>
   <div class="hello row">
-    <div class="col-md-8 plans">
-      <h4>Plans for today: </h4>
-      <ul class="list-group">
-        <li class="list-group-item event-item" v-for="event in events"
-            v-bind:class="{expired: new Date(event.datetime) < new Date(),
+    <div class="col-md-8">
+      <div class="plans">
+        <ul class="list-group">
+          <li class="list-group-item event-item" v-for="event in events"
+              v-bind:class="{expired: new Date(event.datetime) < new Date(),
             expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
              active: event == selectedEvent}">
-          <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
-                       @change="done(event)"> {{ event.title }}</el-checkbox>
-          <div class="controls">
-            <el-button class="el-icon-edit" @click="edit(event)"></el-button>
-            <el-button class="el-icon-delete" @click="remove(event)"></el-button>
-          </div>
-        </li>
-      </ul>
+            <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
+                         @change="done(event)"> {{ event.title }}
+            </el-checkbox>
+            <div class="controls">
+              <el-button class="el-icon-edit" @click="edit(event)"></el-button>
+              <el-button class="el-icon-delete" @click="remove(event)"></el-button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-      <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="col-md-4 event-form">
-        <el-form-item label="Title" prop="title" required>
-          <el-input v-model="newEvent.title"></el-input>
-        </el-form-item>
-        <el-form-item label="Description" prop="description">
-          <el-input type="textarea" v-model="newEvent.description"></el-input>
-        </el-form-item>
-        <el-form-item label="Should be done by" prop="datetime" required>
-              <el-date-picker type="datetime" v-model="newEvent.datetime"
-                              format="dd-MM-yyyy HH:mm"
-                              :clearable="false"
-                              :picker-options="{firstDayOfWeek: 1}"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="Repeat every" prop="period" class="period">
-          <el-input-number v-model="newEvent.period"></el-input-number>
-          days
-        </el-form-item>
+    <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="col-md-4 event-form">
+      <el-form-item label="Title" prop="title" required>
+        <el-input v-model="newEvent.title"></el-input>
+      </el-form-item>
+      <el-form-item label="Description" prop="description">
+        <el-input type="textarea" v-model="newEvent.description"></el-input>
+      </el-form-item>
+      <el-form-item label="Should be done by" prop="datetime" required>
+        <el-date-picker type="datetime" v-model="newEvent.datetime"
+                        format="dd-MM-yyyy HH:mm"
+                        :clearable="false"
+                        :picker-options="{firstDayOfWeek: 1}"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="Repeat every" prop="period" class="period">
+        <el-input-number v-model="newEvent.period"></el-input-number>
+        days
+      </el-form-item>
 
-        <el-form-item>
-          <el-button type="primary" @click="submit('formEvent')">{{editing ? 'Update' : 'Create'}}</el-button>
-          <el-button  v-if="editing" type="warning" @click="cancel(newEvent)">Cancel</el-button>
-        </el-form-item>
-      </el-form>
+      <el-form-item>
+        <el-button type="primary" @click="submit('formEvent')">{{editing ? 'Update' : 'Create'}}</el-button>
+        <el-button v-if="editing" type="warning" @click="cancel(newEvent)">Cancel</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -48,7 +50,7 @@
     name: 'hello',
     data () {
       return {
-        start:  moment().startOf('day'),
+        start: moment().startOf('day'),
         end: moment().endOf('day'),
         editing: false,
         newEvent: {
@@ -61,10 +63,10 @@
         events: [],
         rules: {
           title: [
-            { required: true, message: 'Please input title', trigger: 'blur' },
+            {required: true, message: 'Please input title', trigger: 'blur'},
           ],
           datetime: [
-            { type: 'date', required: true, message: 'Please pick a date and a time', trigger: 'change' }
+            {type: 'date', required: true, message: 'Please pick a date and a time', trigger: 'change'}
           ]
         }
       }
@@ -102,7 +104,7 @@
         console.log(event);
       },
       edit(event){
-        event.datetime =new Date(event.datetime);
+        event.datetime = new Date(event.datetime);
         this.newEvent = Vue.util.extend({}, event);
         this.selectedEvent = event;
         this.editing = true;
@@ -110,11 +112,11 @@
       cancel(){
         this.editing = false;
         this.selectedEvent = false;
-          //  this.newEvent  =  this.selectedEvent;
+        //  this.newEvent  =  this.selectedEvent;
         this.$refs['formEvent'].resetFields();
       },
       remove(event) {
-        this.$confirm('This will delete the event '+event.title, 'Warning', {
+        this.$confirm('This will delete the event ' + event.title, 'Warning', {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning'
