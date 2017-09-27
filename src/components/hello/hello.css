@@ -22,14 +22,21 @@
   font-style: normal;
 
 }
-
+body{
+  font: 16px 'comic_reliefregular';
+  color: #24282b;
+}
+.el-form-item__label{
+  font: 16px 'nautilus_pompiliusregular';
+}
 .event-title .el-checkbox__label{
-  position: relative;
   overflow: hidden;
-  float: right;
   padding: 0 5px;
-  line-height: 22px;font: 20px 'nautilus_pompiliusregular';
-  max-width: 440px;
+  line-height: 22px;
+  font: 16px 'comic_reliefregular';
+}
+.el-checkbox{
+  overflow: hidden;
 }
 .event-title  .el-checkbox__input{
   margin-right: 10px;
@@ -63,20 +70,38 @@
   max-height: 600px;
   overflow: auto;
   padding-bottom: 15px;
+  padding-top: 30px;
+}
+#pin{
+  background: url('../../assets/images/pin.png') top center no-repeat;
+  height: 100px;
+  background-size: contain;
+  margin-bottom: -45px;
+  position: relative;
+  z-index: 1;
+}
+#todo{
+  background: url('../../assets/images/todo.png') top center no-repeat;
+  height: 50px;
+  width: 100px;
+  margin-left: 15%;
+  margin-bottom: 10px;
+  background-size: contain;
 }
 .list-group-item{
 /*  background-color: transparent;*/
   border: none;
+  padding: 5px 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .expired{
-  color: #a94442;
 }
 .expired_today{
-  color: #8a6d3b;
+
 }
 .el-checkbox{
   color: inherit;
-  white-space: normal;
  }
 .controls{
   float: right;
@@ -96,8 +121,9 @@ label{
 .period{
   margin-top: 50px;
 }
-.plans{
-  background: url('../../assets/images/clipboard.png') 0px -5px no-repeat;
-  background-size: 100%;
-  padding: 20% 5% 0;
+.el-button+.el-button {
+    margin-left: 5px;
+}
+.el-button{
+  padding: 8px 10px;
 }

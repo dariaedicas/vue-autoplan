@@ -2,7 +2,10 @@
   <div class="hello row">
     <div class="col-md-8">
       <div class="plans">
+        <div id="pin"></div>
         <ul class="list-group">
+
+          <div id="todo"></div>
           <li class="list-group-item event-item" v-for="event in events"
               v-bind:class="{expired: new Date(event.datetime) < new Date(),
             expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
