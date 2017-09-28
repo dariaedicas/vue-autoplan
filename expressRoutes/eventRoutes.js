@@ -6,9 +6,9 @@ var Event = require('../models/Event');
 var moment = require('moment');
 // Defined store route
 eventRoutes.route('/add').post(function (req, res) {
-  if(req.body.datetime <= moment() || req.body.datetime > moment().endOf('day')){
+  /*if(req.body.datetime <= moment() || req.body.datetime > moment().endOf('day')){
     req.body.datetime = moment(req.body.datetime).add(req.body.period, 'days');
-  }
+  }*/
   var event = new Event(req.body);
   event.save()
     .then(event => {
@@ -55,9 +55,9 @@ eventRoutes.route('/update/:id').post(function (req, res) {
       event.title = req.body.title;
       event.description = req.body.description;
       event.period = req.body.period;
-      if(req.body.datetime <= moment() || req.body.datetime > moment().endOf('day')) {
+     /* if(req.body.datetime <= moment() || req.body.datetime > moment().endOf('day')) {
         event.datetime = moment(req.body.datetime).add(req.body.period, 'days');
-      }
+      }*/
       event.datetime = req.body.datetime;
       event.save().then(event => {
         res.json('Update complete');
@@ -81,13 +81,13 @@ eventRoutes.route('/done/:id').post(function (req, res) {
     if (!event)
       return next(new Error('Could not load Document'));
     else {
-      event.is_done = req.body.is_done;
+    //  event.is_done = req.body.is_done;
       if(req.body.period > 0){
         event.datetime = moment(req.body.datetime).add(req.body.period, 'days');
       } else{
         event.datetime = new Date();
       }
-      event.done = new Date();
+      //event.done = new Date();
       event.save().then(event => {
         res.json('Update complete');
       })
