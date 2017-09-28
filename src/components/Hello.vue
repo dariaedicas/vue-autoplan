@@ -12,7 +12,7 @@
             && !event.is_done,
              active: event == selectedEvent}">
             <i class="el-icon-information"></i>
-            <el-checkbox :disabled="event.is_done" v-model="event.is_done" class="event-title"
+            <el-checkbox v-model="event.is_done" class="event-title"
                          v-bind:class="{done: event.is_done }"
                          @change="done(event)"> {{ event.title }}
             </el-checkbox>
