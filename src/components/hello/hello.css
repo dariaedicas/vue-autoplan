@@ -69,7 +69,7 @@ body{
   border: 15px solid rgba(125, 89, 49, 0.44);
   max-height: 600px;
   overflow: auto;
-  padding-bottom: 15px;
+  padding-bottom: 35px;
   padding-top: 30px;
 }
 #pin{
@@ -87,19 +87,16 @@ body{
   margin-left: 15%;
   margin-bottom: 10px;
   background-size: contain;
+  list-style: none;
 }
 .list-group-item{
-/*  background-color: transparent;*/
-  border: none;
+  border-right: none;
+  border-left: none;
   padding: 5px 20px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.expired{
-}
-.expired_today{
 
-}
 .el-checkbox{
   color: inherit;
  }
@@ -127,3 +124,27 @@ label{
 .el-button{
   padding: 8px 10px;
 }
+
+.event-item .el-icon-information{
+  color:transparent;
+  font-size: 12px;
+  vertical-align: top;
+}
+.event-item.expired .el-icon-information{
+  color: #ff4949;
+}
+.event-item.expired-today .el-icon-information{
+  color: #f7ba2a;
+ }
+.event-item label, .event-item i{
+  vertical-align: middle;
+}
+.list-leave-active {
+  transition: all 0.5s;
+  opacity: 0;
+}
+.list-group-item:last-child{
+  border-radius: 0;
+}
+
+

@@ -3,21 +3,23 @@
     <div class="col-md-8">
       <div class="plans">
         <div id="pin"></div>
-        <ul class="list-group">
-
-          <div id="todo"></div>
-          <li class="list-group-item event-item" v-for="event in events"
+        <!--TODO::do something with checking expired-->
+        <transition-group name="list" tag="ul" class="list-group">
+          <li id="todo" :key="'todo'"></li>
+          <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
               v-bind:class="{expired: new Date(event.datetime) < new Date(),
-            expired_today: new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
+            'expired-today': new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
              active: event == selectedEvent}">
+            <i class="el-icon-information"></i>
             <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
                          @change="done(event)"> {{ event.title }}
             </el-checkbox>
             <div class="controls">
               <el-button class="el-icon-edit" @click="edit(event)"></el-button>
-              <el-button class="el-icon-delete" @click="remove(event)"></el-button>
+              <el-button class="el-icon-delete" @click="remove(event, index)"></el-button>
             </div>
           </li>
+        </transition-group>
         </ul>
       </div>
     </div>
@@ -38,7 +40,6 @@
         <el-input-number v-model="newEvent.period"></el-input-number>
         days
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" @click="submit('formEvent')">{{editing ? 'Update' : 'Create'}}</el-button>
         <el-button v-if="editing" type="warning" @click="cancel(newEvent)">Cancel</el-button>
@@ -85,7 +86,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let uri = 'http://localhost:4000/events/add';
-            this.axios.post(uri, this.event).then((response) => {
+            this.axios.post(uri, this.newEvent).then((response) => {
               console.log(response);
               this.$refs[formName].resetFields();
               this.fetchItems();
@@ -101,10 +102,22 @@
         let uri = 'http://localhost:4000/events';
         this.axios.get(uri).then((response) => {
           this.events = response.data;
-        });
+        }).catch(() => {
+          this.$notify({
+            title: 'Error',
+            message: "Can't get events list",
+            type: 'error'
+          });
+        })
       },
       done(event){
         console.log(event);
+        let uri = 'http://localhost:4000/events/done/' + event._id;
+        this.axios.post(uri, event).then(() => {
+          this.fetchItems();
+        }).catch(() => {
+
+        });
       },
       edit(event){
         event.datetime = new Date(event.datetime);
@@ -118,20 +131,31 @@
         //  this.newEvent  =  this.selectedEvent;
         this.$refs['formEvent'].resetFields();
       },
-      remove(event) {
+      remove(event, idx) {
         this.$confirm('This will delete the event ' + event.title, 'Warning', {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: 'Delete completed'
+          let uri = 'http://localhost:4000/events/delete/' + event._id;
+          this.axios.get(uri).then(() => {
+            this.events.splice(idx, 1);
+            this.$notify({
+              title: 'Removed',
+              message: event.title + ' was removed',
+              type: 'success'
+            });
+          }).catch(() => {
+            this.$notify({
+              title: 'Error',
+              message: event.title + ' was not removed',
+              type: 'error'
+            });
           });
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: 'Delete canceled'
+          this.$notify.info({
+            title: 'Canceled',
+            message: event.title + ' deletion was canceled'
           });
         });
       }
