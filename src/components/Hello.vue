@@ -7,11 +7,13 @@
         <transition-group name="list" tag="ul" class="list-group">
           <li id="todo" :key="'todo'"></li>
           <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
-              v-bind:class="{expired: new Date(event.datetime) < new Date(),
-            'expired-today': new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start,
+              v-bind:class="{expired: new Date(event.datetime) < new Date() && !event.is_done,
+            'expired-today': new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start
+            && !event.is_done,
              active: event == selectedEvent}">
             <i class="el-icon-information"></i>
-            <el-checkbox v-model="event.is_done" class="event-title" v-bind:class="{done: event.is_done }"
+            <el-checkbox :disabled="event.is_done" v-model="event.is_done" class="event-title"
+                         v-bind:class="{done: event.is_done }"
                          @change="done(event)"> {{ event.title }}
             </el-checkbox>
             <div class="controls">
@@ -83,22 +85,44 @@
         return moment()
       },
       submit(formName) {
+        let uri = 'http://localhost:4000/events/add';
+        let action = 'create';
+        if (this.newEvent._id) {
+          uri = 'http://localhost:4000/events/update/' + this.newEvent._id;
+          action = 'update';
+        }
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let uri = 'http://localhost:4000/events/add';
-            this.axios.post(uri, this.newEvent).then((response) => {
-              console.log(response);
+            this.axios.post(uri, this.newEvent).then(() => {
+              this.editing = false;
+              this.$notify({
+                title: 'Success',
+                message: this.newEvent.title + ' was '+ action +'d',
+                type: 'success'
+              });
+              //TODO::create separate method
               this.$refs[formName].resetFields();
+              this.newEvent = {
+                title: '',
+                description: '',
+                period: 0,
+                datetime: new Date(moment().endOf('day'))
+              };
               this.fetchItems();
+            }).catch(() =>{
+              this.$notify({
+                title: 'Error',
+                message: "Can't "+action,
+                type: 'error'
+              });
             })
           } else {
-            console.log('error submit!!');
+            this.editing = false;
             return false;
           }
         });
       },
-      fetchItems()
-      {
+      fetchItems(){
         let uri = 'http://localhost:4000/events';
         this.axios.get(uri).then((response) => {
           this.events = response.data;
@@ -111,13 +135,35 @@
         })
       },
       done(event){
-        console.log(event);
-        let uri = 'http://localhost:4000/events/done/' + event._id;
-        this.axios.post(uri, event).then(() => {
-          this.fetchItems();
+        this.$confirm('Have you really done this? ' + event.title, 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          let uri = 'http://localhost:4000/events/done/' + event._id;
+          this.axios.post(uri, event).then(() => {
+            this.$notify({
+              title: 'Done',
+              message: event.title + ' was done',
+              type: 'success'
+            });
+            this.fetchItems();
+          }).catch(() => {
+            event.is_done = false;
+            this.$notify({
+              title: 'Error',
+              message: event.title + ' was not done',
+              type: 'error'
+            });
+          });
         }).catch(() => {
-
+          event.is_done = false;
+          this.$notify.info({
+            title: 'Canceled',
+            message: 'Doing ' + event.title + ' was canceled'
+          });
         });
+
       },
       edit(event){
         event.datetime = new Date(event.datetime);
@@ -128,7 +174,12 @@
       cancel(){
         this.editing = false;
         this.selectedEvent = false;
-        //  this.newEvent  =  this.selectedEvent;
+        this.newEvent = {
+          title: '',
+          description: '',
+          period: 0,
+          datetime: new Date(moment().endOf('day'))
+        };
         this.$refs['formEvent'].resetFields();
       },
       remove(event, idx) {
@@ -155,7 +206,7 @@
         }).catch(() => {
           this.$notify.info({
             title: 'Canceled',
-            message: event.title + ' deletion was canceled'
+            message: 'Deleting '+ event.title + ' was canceled'
           });
         });
       }

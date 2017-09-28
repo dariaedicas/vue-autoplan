@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// Define collection and schema for Items
+// TODO::add validation rules
 var Event = new Schema({
   title: {
     type: String
@@ -17,6 +17,9 @@ var Event = new Schema({
   },
   is_done: {
     type: Boolean, default: false
+  },
+  done:{
+    type: Date
   }
 },{
   collection: 'events'

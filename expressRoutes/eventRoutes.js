@@ -6,7 +6,9 @@ var Event = require('../models/Event');
 var moment = require('moment');
 // Defined store route
 eventRoutes.route('/add').post(function (req, res) {
-  req.body.datetime = moment(req.body.datetime).add(req.body.period, 'days');
+  if(req.body.datetime <= moment() || req.body.datetime > moment().endOf('day')){
+    req.body.datetime = moment(req.body.datetime).add(req.body.period, 'days');
+  }
   var event = new Event(req.body);
   event.save()
     .then(event => {
@@ -17,11 +19,7 @@ eventRoutes.route('/add').post(function (req, res) {
     });
 });
 
-// Defined get data(index or listing) route
-//TODO::and done today
-
 eventRoutes.route('/').get(function (req, res) {
-
   var start = moment().startOf('day');
   var end = moment().endOf('day');
   Event.find( {
@@ -37,7 +35,7 @@ eventRoutes.route('/').get(function (req, res) {
       else {
         res.json(events);
       }
-    }).sort({"datetime": 1});
+    }).sort({is_done: 1, "datetime": 1});
 });
 
 // Defined edit route
@@ -54,8 +52,12 @@ eventRoutes.route('/update/:id').post(function (req, res) {
     if (!event)
       return next(new Error('Could not load Document'));
     else {
+      event.title = req.body.title;
       event.description = req.body.description;
       event.period = req.body.period;
+      if(req.body.datetime <= moment() || req.body.datetime > moment().endOf('day')) {
+        event.datetime = moment(req.body.datetime).add(req.body.period, 'days');
+      }
       event.datetime = req.body.datetime;
       event.save().then(event => {
         res.json('Update complete');
@@ -74,14 +76,18 @@ eventRoutes.route('/delete/:id').get(function (req, res) {
     else res.json('Successfully removed');
   });
 });
-//TODO::add period, done date
 eventRoutes.route('/done/:id').post(function (req, res) {
   Event.findById({_id: req.params.id}, function (err, event) {
     if (!event)
       return next(new Error('Could not load Document'));
     else {
       event.is_done = req.body.is_done;
-      event.datetime = new Date();
+      if(req.body.period > 0){
+        event.datetime = moment(req.body.datetime).add(req.body.period, 'days');
+      } else{
+        event.datetime = new Date();
+      }
+      event.done = new Date();
       event.save().then(event => {
         res.json('Update complete');
       })
