@@ -5,7 +5,10 @@
         <div id="pin"></div>
         <!--TODO::do something with checking expired-->
         <transition-group name="list" tag="ul" class="list-group">
-          <li id="todo" :key="'todo'"></li>
+          <li :key="'todo'">
+            <div id="todo"></div>
+            <i class="el-icon-d-arrow-right" @click="showFuture()"></i>
+          </li>
           <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
               v-bind:class="{expired: new Date(event.datetime) < new Date() && !event.is_done,
             'expired-today': new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start
@@ -81,6 +84,18 @@
       this.fetchItems();
     },
     methods: {
+      showFuture: function(){
+        let uri = 'http://localhost:4000/events/future';
+        this.axios.get(uri).then((response) => {
+          this.events = response.data;
+        }).catch(() => {
+          this.$notify({
+            title: 'Error',
+            message: "Can't get events list",
+            type: 'error'
+          });
+        })
+      },
       moment: function () {
         return moment()
       },

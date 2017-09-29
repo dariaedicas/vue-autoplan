@@ -18,16 +18,9 @@ eventRoutes.route('/add').post(function (req, res) {
       res.status(400).send("unable to save to database");
     });
 });
-
-eventRoutes.route('/').get(function (req, res) {
-  var start = moment().startOf('day');
+eventRoutes.route('/future').get(function (req, res) {
   var end = moment().endOf('day');
-  Event.find( {
-    $or: [
-      {"datetime": {$lte: end}, "is_done": false},
-      { $and : [ { datetime : {$lte: end, $gte: start} }, { is_done : true } ] }
-    ]
-  },
+  Event.find({"datetime": {$gte: end}},
     function (err, events) {
       if (err) {
         console.log(err);
@@ -35,7 +28,19 @@ eventRoutes.route('/').get(function (req, res) {
       else {
         res.json(events);
       }
-    }).sort({is_done: 1, "datetime": 1});
+    }).sort({"datetime": 1});
+});
+eventRoutes.route('/').get(function (req, res) {
+  var end = moment().endOf('day');
+  Event.find({"datetime": {$lte: end}},
+    function (err, events) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.json(events);
+      }
+    }).sort({"datetime": 1});
 });
 
 // Defined edit route
@@ -83,9 +88,9 @@ eventRoutes.route('/done/:id').post(function (req, res) {
     else {
     //  event.is_done = req.body.is_done;
       if(req.body.period > 0){
-        event.datetime = moment(req.body.datetime).add(req.body.period, 'days');
+        event.datetime = moment().add(req.body.period, 'days');
       } else{
-        event.datetime = new Date();
+        event.datetime = moment();
       }
       //event.done = new Date();
       event.save().then(event => {
