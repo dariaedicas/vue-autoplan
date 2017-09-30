@@ -65,12 +65,15 @@ body{
   -o-transition: all 0.0s ;
   transition: all 0.0s;
 }
-.plans .list-group{
+.plans{
   border: 15px solid rgba(125, 89, 49, 0.44);
+  padding-top: 30px;
+}
+.plans .list-group{
+  display: block;
   max-height: 600px;
   overflow: auto;
   padding-bottom: 35px;
-  padding-top: 30px;
 }
 #pin{
   background: url('../../assets/images/pin.png') top center no-repeat;
@@ -85,9 +88,9 @@ body{
   height: 50px;
   width: 100px;
   margin-left: 15%;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background-size: contain;
-  list-style: none;
+  float: left;
 }
 .list-group-item{
   border-right: none;
@@ -146,5 +149,17 @@ label{
 .list-group-item:last-child{
   border-radius: 0;
 }
-
-
+.date{
+  font: 12px "Arial";
+}
+.title{
+  vertical-align: middle;
+}
+.plans-header{
+  overflow: auto;
+}
+.future-events{
+  float: right;
+  margin-right: 20px;
+  cursor: pointer;
+}

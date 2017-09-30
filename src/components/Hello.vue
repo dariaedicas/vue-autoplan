@@ -1,24 +1,28 @@
 <template>
   <div class="hello row">
     <div class="col-md-8">
+      <div id="pin"></div>
       <div class="plans">
-        <div id="pin"></div>
-        <!--TODO::do something with checking expired-->
+        <div class="plans-header">
+          <div id="todo"></div>
+          <i v-if="isFuture" class="el-icon-d-arrow-left future-events" @click="fetchItems()"></i>
+          <i v-if="!isFuture" class="el-icon-d-arrow-right future-events" @click="showFuture()"></i>
+        </div>
         <transition-group name="list" tag="ul" class="list-group">
-          <li :key="'todo'">
-            <div id="todo"></div>
-            <i class="el-icon-d-arrow-right" @click="showFuture()"></i>
-          </li>
           <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
-              v-bind:class="{expired: new Date(event.datetime) < new Date() && !event.is_done,
-            'expired-today': new Date(event.datetime) < new Date() &&  new Date(event.datetime) >= start
-            && !event.is_done,
-             active: event == selectedEvent}">
+              v-bind:class="{expired: new Date(event.datetime) < new Date(),
+               'expired-today': isExpiredToday(event),
+                active: event == selectedEvent}">
             <i class="el-icon-information"></i>
             <el-checkbox v-model="event.is_done" class="event-title"
                          v-bind:class="{done: event.is_done }"
-                         @change="done(event)"> {{ event.title }}
+                         @change="done(event)">
             </el-checkbox>
+            <span class="title">
+              <span v-if="isToday(event)" class="date">{{event.datetime | formatDate('HH:mm')}} </span>
+              <span v-if="!isToday(event)" class="date">{{event.datetime | formatDate('DD-MM-YYYY')}}</span>
+              - {{ event.title }}
+            </span>
             <div class="controls">
               <el-button class="el-icon-edit" @click="edit(event)"></el-button>
               <el-button class="el-icon-delete" @click="remove(event, index)"></el-button>
@@ -56,6 +60,13 @@
   import moment from 'moment';
   import Vue from 'vue';
   export default {
+    filters: {
+      formatDate: function (value, format) {
+        if (value) {
+          return moment(String(value)).format(format)
+        }
+      }
+    },
     name: 'hello',
     data () {
       return {
@@ -77,17 +88,25 @@
           datetime: [
             {type: 'date', required: true, message: 'Please pick a date and a time', trigger: 'change'}
           ]
-        }
+        },
+        isFuture: false
       }
     },
     created: function () {
       this.fetchItems();
     },
     methods: {
-      showFuture: function(){
+      isToday: function(event){
+        return new Date(event.datetime) <= this.end && new Date(event.datetime) >= this.start
+      },
+      isExpiredToday: function (event) {
+        return new Date(event.datetime) < new Date() && new Date(event.datetime) >= this.start
+      },
+      showFuture: function () {
         let uri = 'http://localhost:4000/events/future';
         this.axios.get(uri).then((response) => {
           this.events = response.data;
+          this.isFuture = true;
         }).catch(() => {
           this.$notify({
             title: 'Error',
@@ -112,7 +131,7 @@
               this.editing = false;
               this.$notify({
                 title: 'Success',
-                message: this.newEvent.title + ' was '+ action +'d',
+                message: this.newEvent.title + ' was ' + action + 'd',
                 type: 'success'
               });
               //TODO::create separate method
@@ -124,10 +143,10 @@
                 datetime: new Date(moment().endOf('day'))
               };
               this.fetchItems();
-            }).catch(() =>{
+            }).catch(() => {
               this.$notify({
                 title: 'Error',
-                message: "Can't "+action,
+                message: "Can't " + action,
                 type: 'error'
               });
             })
@@ -141,6 +160,7 @@
         let uri = 'http://localhost:4000/events';
         this.axios.get(uri).then((response) => {
           this.events = response.data;
+          this.isFuture = false;
         }).catch(() => {
           this.$notify({
             title: 'Error',
@@ -221,7 +241,7 @@
         }).catch(() => {
           this.$notify.info({
             title: 'Canceled',
-            message: 'Deleting '+ event.title + ' was canceled'
+            message: 'Deleting ' + event.title + ' was canceled'
           });
         });
       }
