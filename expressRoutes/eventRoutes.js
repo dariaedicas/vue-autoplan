@@ -32,7 +32,7 @@ eventRoutes.route('/future').get(function (req, res) {
 });
 eventRoutes.route('/').get(function (req, res) {
   var end = moment().endOf('day');
-  Event.find({"datetime": {$lte: end}},
+  Event.find({"datetime": {$lte: end}, is_done: false},
     function (err, events) {
       if (err) {
         console.log(err);
@@ -91,6 +91,7 @@ eventRoutes.route('/done/:id').post(function (req, res) {
         event.datetime = moment().add(req.body.period, 'days');
       } else{
         event.datetime = moment();
+        event.is_done = true;
       }
       //event.done = new Date();
       event.save().then(event => {

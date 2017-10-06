@@ -29,7 +29,6 @@
             </div>
           </li>
         </transition-group>
-        </ul>
       </div>
     </div>
     <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="col-md-4 event-form">
@@ -54,6 +53,20 @@
         <el-button v-if="editing" type="warning" @click="cancel(newEvent)">Cancel</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog
+      title="Tips"
+      :visible.sync="dialogVisible"
+      size="tiny"
+      :before-close="handleClose">
+      <el-form-item label="Was done" prop="datetime" required>
+        <el-date-picker type="datetime" v-model="done_datetime"
+                        format="dd-MM-yyyy HH:mm"
+                        :clearable="false"
+                        :picker-options="{firstDayOfWeek: 1}"></el-date-picker>
+      </el-form-item>
+  <span slot="footer" class="dialog-footer">
+  </span>
+    </el-dialog>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -70,9 +83,11 @@
     name: 'hello',
     data () {
       return {
+        dialogVisible: false,
         start: moment().startOf('day'),
         end: moment().endOf('day'),
         editing: false,
+        done_datetime: new Date(),
         newEvent: {
           title: '',
           description: '',
@@ -89,7 +104,8 @@
             {type: 'date', required: true, message: 'Please pick a date and a time', trigger: 'change'}
           ]
         },
-        isFuture: false
+        isFuture: false,
+        doneEvent: false
       }
     },
     created: function () {
@@ -169,28 +185,35 @@
           });
         })
       },
+      handleClose(done) {
+        done();
+        let event = this.doneEvent;
+        let uri = 'http://localhost:4000/events/done/' + event._id;
+        this.axios.post(uri, event).then(() => {
+          this.$notify({
+            title: 'Done',
+            message: event.title + ' was done',
+            type: 'success'
+          });
+          this.fetchItems();
+        }).catch(() => {
+          done();
+          event.is_done = false;
+          this.$notify({
+            title: 'Error',
+            message: event.title + ' was not done',
+            type: 'error'
+          });
+        });
+      },
       done(event){
         this.$confirm('Have you really done this? ' + event.title, 'Warning', {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          let uri = 'http://localhost:4000/events/done/' + event._id;
-          this.axios.post(uri, event).then(() => {
-            this.$notify({
-              title: 'Done',
-              message: event.title + ' was done',
-              type: 'success'
-            });
-            this.fetchItems();
-          }).catch(() => {
-            event.is_done = false;
-            this.$notify({
-              title: 'Error',
-              message: event.title + ' was not done',
-              type: 'error'
-            });
-          });
+          this.dialogVisible = true;
+          this.doneEvent = event;
         }).catch(() => {
           event.is_done = false;
           this.$notify.info({
