@@ -1,5 +1,6 @@
 <template>
     <div class="hello row">
+        <div class="col-md-8">
         <div id="pin"></div>
         <div class="plans">
             <div class="plans-header">
@@ -28,6 +29,7 @@
                     </div>
                 </li>
             </transition-group>
+        </div>
         </div>
         <el-dialog
                 :custom-class="'create-event-dialog'"
