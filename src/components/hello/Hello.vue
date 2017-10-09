@@ -40,7 +40,7 @@
             <event-dialog
                     :editing="editing"
                     :newEvent="newEvent"
-                    v-on::updateItems="fetchItems"
+                    v-on:updateItems="fetchItems"
                     v-on:closeDialog="handleEventDialogClose">
             </event-dialog>
         </el-dialog>
