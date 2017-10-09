@@ -45,10 +45,10 @@
         },
         methods: {
             createEvent(formName) {
-                let uri = 'http://localhost:4000/events/add';
+                let uri = process.env.API_SERVER+'events/add';
                 let action = 'create';
                 if (this.newEvent._id) {
-                    uri = 'http://localhost:4000/events/update/' + this.newEvent._id;
+                    uri = process.env.API_SERVER+'events/update/' + this.newEvent._id;
                     action = 'update';
                 }
                 this.$refs[formName].validate((valid) => {

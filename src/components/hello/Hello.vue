@@ -123,7 +123,7 @@
                 return new Date(event.datetime) < new Date() && new Date(event.datetime) >= this.start
             },
             showFuture: function () {
-                let uri = 'http://localhost:4000/events/future';
+                let uri = process.env.API_SERVER+'events/future';
                 this.axios.get(uri).then((response) => {
                     this.events = response.data;
                     this.isFuture = true;
@@ -139,7 +139,7 @@
                 return moment()
             },
             fetchItems(){
-                let uri = 'http://localhost:4000/events';
+                let uri = process.env.API_SERVER+'events';
                 this.axios.get(uri).then((response) => {
                     this.events = response.data;
                     this.isFuture = false;
@@ -163,7 +163,7 @@
                 this.dialogVisible = false;
                 let event = this.doneEvent;
                 this.doneEvent.done_datetime = this.doneDatetime;
-                let uri = 'http://localhost:4000/events/done/' + event._id;
+                let uri = process.env.API_SERVER+'events/done/' + event._id;
                 this.axios.post(uri, event).then(() => {
                     this.$notify({
                         title: 'Done',
@@ -198,7 +198,7 @@
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
-                    let uri = 'http://localhost:4000/events/delete/' + event._id;
+                    let uri = process.env.API_SERVER+'events/delete/' + event._id;
                     this.axios.get(uri).then(() => {
                         this.events.splice(idx, 1);
                         this.$notify({
