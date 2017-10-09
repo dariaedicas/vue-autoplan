@@ -20,7 +20,7 @@ eventRoutes.route('/add').post(function (req, res) {
 });
 eventRoutes.route('/future').get(function (req, res) {
   var end = moment().endOf('day');
-  Event.find({"datetime": {$gte: end}},
+  Event.find({"datetime": {$gt: end}},
     function (err, events) {
       if (err) {
         console.log(err);
@@ -88,9 +88,9 @@ eventRoutes.route('/done/:id').post(function (req, res) {
     else {
     //  event.is_done = req.body.is_done;
       if(req.body.period > 0){
-        event.datetime = moment().add(req.body.period, 'days');
+        event.datetime = moment(req.body.done_datetime).add(req.body.period, 'days');
       } else{
-        event.datetime = moment();
+        event.datetime = moment(req.body.done_datetime);
         event.is_done = true;
       }
       //event.done = new Date();

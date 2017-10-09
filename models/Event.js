@@ -17,9 +17,6 @@ var Event = new Schema({
   },
   is_done: {
     type: Boolean, default: false
-  },
-  done:{
-    type: Date
   }
 },{
   collection: 'events'

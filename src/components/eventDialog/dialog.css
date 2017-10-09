@@ -1,0 +1,34 @@
+.create-event-dialog{
+    background: none;
+    box-shadow: none;
+    width: 430px;
+}
+.el-dialog__header, .el-dialog__body{
+    padding: 0;
+}
+.event-form .controls{
+    margin-top: 35px;
+    float: none;
+}
+.event-form .el-form-item.title{
+    margin-bottom: 20px;
+}
+.event-form .el-form-item{
+    margin-bottom: 10px;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color:  #48576a;
+    font: 16px 'nautilus_pompiliusregular';
+}
+::-moz-placeholder { /* Firefox 19+ */
+    color:  #48576a;
+    font: 16px 'nautilus_pompiliusregular';
+}
+:-ms-input-placeholder { /* IE 10+ */
+    color:  #48576a;
+    font: 16px 'nautilus_pompiliusregular';
+}
+:-moz-placeholder { /* Firefox 18- */
+    color:  #48576a;
+    font: 16px 'nautilus_pompiliusregular';
+}

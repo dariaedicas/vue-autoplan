@@ -26,6 +26,9 @@ body{
   font: 16px 'comic_reliefregular';
   color: #24282b;
 }
+.plans{
+  width: 100%;
+}
 .el-form-item__label{
   font: 16px 'nautilus_pompiliusregular';
 }
@@ -109,7 +112,7 @@ body{
 .event-form{
   background: url('../../assets/images/note.png') no-repeat;
   background-size: 100%;
-  padding: 70px 40px 0px;
+  padding: 85px 40px 10px;
 }
 label{
   margin-bottom: 0px;
@@ -119,7 +122,7 @@ label{
   resize: none;
 }
 .period{
-  margin-top: 50px;
+
 }
 .el-button+.el-button {
     margin-left: 5px;
@@ -157,6 +160,10 @@ label{
 }
 .plans-header{
   overflow: auto;
+}
+.create-event{
+  float: left;
+  cursor: pointer;
 }
 .future-events{
   float: right;
