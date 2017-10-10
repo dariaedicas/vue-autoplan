@@ -22,6 +22,9 @@
   font-style: normal;
 
 }
+*{
+  outline: none;
+}
 body{
   font: 16px 'comic_reliefregular';
   color: #24282b;
@@ -112,17 +115,26 @@ body{
 .event-form{
   background: url('../../assets/images/note.png') no-repeat;
   background-size: 100%;
-  padding: 85px 40px 10px;
+  padding: 60px 40px 10px;
+}
+i.custom-icon{
+  border-radius: 50%;
+  padding: 7px;
+  background: white;
+  border: 2px solid white;
+}
+i.custom-icon:hover{
+  border-radius: 50%;
+  padding: 7px;
+  color:#007bff;
+  border: 2px solid #27a9ff;
 }
 label{
   margin-bottom: 0px;
 }
-.el-textarea__inner{
+.create-event-dialog .el-textarea__inner{
   height: 80px;
   resize: none;
-}
-.period{
-
 }
 .el-button+.el-button {
     margin-left: 5px;
@@ -164,8 +176,10 @@ label{
 .create-event{
   float: left;
   cursor: pointer;
+  margin-top: 4px;
 }
 .future-events{
+  margin-top: 4px;
   float: right;
   margin-right: 20px;
   cursor: pointer;

@@ -5,9 +5,9 @@
         <div class="plans">
             <div class="plans-header">
                 <div id="todo"></div>
-                <i class="el-icon-plus create-event" @click="eventDialogVisible = true"></i>
-                <i v-if="isFuture" class="el-icon-d-arrow-left future-events" @click="fetchItems()"></i>
-                <i v-if="!isFuture" class="el-icon-d-arrow-right future-events" @click="showFuture()"></i>
+                <i v-if="isAuthenticated" class="el-icon-plus create-event custom-icon" @click="eventDialogVisible = true"></i>
+                <i v-if="isFuture" class="el-icon-d-arrow-left future-events custom-icon" @click="fetchItems()"></i>
+                <i v-if="!isFuture" class="el-icon-d-arrow-right future-events custom-icon" @click="showFuture()"></i>
             </div>
             <transition-group name="list" tag="ul" class="list-group">
                 <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
@@ -31,11 +31,14 @@
             </transition-group>
         </div>
         </div>
+        <div class="col-md-4">
+            <button @click="authenticate('facebook')" v-if="!isAuthenticated">Login with Facebook</button>
+            <button @click="logout()" v-if="isAuthenticated">Logout</button>
+    </div>
         <el-dialog
                 :custom-class="'create-event-dialog'"
                 :visible.sync="eventDialogVisible"
                 size="tiny"
-                :show-close="false"
                 :before-close="handleEventDialogClose">
             <event-dialog
                     :editing="editing"
@@ -70,6 +73,7 @@
     import Vue from 'vue';
     import eventDialog from '../eventDialog/dialog.vue';
     import EventDialog from "../eventDialog/dialog";
+
     export default {
         components: {
             EventDialog,
@@ -85,6 +89,7 @@
         name: 'hello',
         data () {
             return {
+                isAuthenticated: this.$auth.isAuthenticated(),
                 eventDialogVisible: false,
                 editing: false,
                 newEvent: {
@@ -106,8 +111,30 @@
             this.fetchItems();
         },
         methods: {
+            authenticate(provider){
+                this.$auth.authenticate(provider).then((response) => {
+                    return this.axios.get('https://graph.facebook.com/v2.4/me', {
+                        params: {
+                            access_token: response.data.access_token,
+                            fields: 'id,name,short_name,name_format,first_name,middle_name,last_name,gender,email,verified,is_verified,cover,picture,timezone,currency,locale,age_range,updated_time,link,devices,is_shared_login,can_review_measurement_request',
+                        },
+                    })
+                }).then((response) => {
+                    this.isAuthenticated =true;
+                    localStorage.setItem('user_id', response.data.id);
+                    this.fetchItems();
+                }).catch(function (err) {
+
+                })
+            },
+            logout() {
+                this.isAuthenticated =false;
+                this.$auth.logout();
+                localStorage.removeItem('user_id');
+                this.fetchItems();
+            },
             handleEventDialogClose(){
-                this.eventDialogVisible=false
+                this.eventDialogVisible=false;
                 this.editing=false;
                 this.newEvent={
                     title: '',
@@ -123,7 +150,10 @@
                 return new Date(event.datetime) < new Date() && new Date(event.datetime) >= this.start
             },
             showFuture: function () {
-                let uri = process.env.API_SERVER+'events/future';
+                if(!this.getUserId()){
+                    return;
+                }
+                let uri = process.env.API_SERVER+'events/future/'+this.getUserId();
                 this.axios.get(uri).then((response) => {
                     this.events = response.data;
                     this.isFuture = true;
@@ -138,8 +168,23 @@
             moment: function () {
                 return moment()
             },
+            getUserId: function(){
+                if(!localStorage.getItem('user_id')){
+                    this.$notify({
+                        title: 'Error',
+                        message: 'Please log in!',
+                        type: 'error'
+                    });
+                    return false;
+                } else{
+                    return localStorage.getItem('user_id');
+                }
+            },
             fetchItems(){
-                let uri = process.env.API_SERVER+'events';
+                if(!this.getUserId()){
+                    return;
+                }
+                let uri = process.env.API_SERVER+'events/'+this.getUserId();
                 this.axios.get(uri).then((response) => {
                     this.events = response.data;
                     this.isFuture = false;

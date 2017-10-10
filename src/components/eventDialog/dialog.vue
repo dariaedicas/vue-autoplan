@@ -1,26 +1,23 @@
 <template>
         <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="event-form">
-            <el-form-item prop="title" required class="title">
+            <el-form-item label='Title' prop="title" required class="title">
                 <el-input v-model="newEvent.title" placeholder="Title"></el-input>
             </el-form-item>
             <el-form-item prop="description">
                 <el-input type="textarea" v-model="newEvent.description" placeholder="Description"></el-input>
             </el-form-item>
-            <el-form-item label="Should be done by" prop="datetime" required>
+            <el-form-item class="datetime" label="Should be done by" prop="datetime" required>
                 <el-date-picker type="datetime" v-model="newEvent.datetime"
                                 format="dd-MM-yyyy HH:mm"
                                 :clearable="false"
                                 :picker-options="{firstDayOfWeek: 1}">
                 </el-date-picker>
+                <i class="el-icon-check create-event-form-item" @click="createEvent('formEvent')"></i>
             </el-form-item>
+            <div class="clearfix"></div>
             <el-form-item label="Repeat every" prop="period" class="period">
                 <el-input-number v-model="newEvent.period"></el-input-number>
                 days
-            </el-form-item>
-            <el-form-item class="controls">
-                <el-button type="primary" @click="createEvent('formEvent')">{{editing ? 'Update' : 'Create'}}
-                </el-button>
-                <el-button v-if="editing" type="warning" @click="$emit('closeDialog');">Cancel</el-button>
             </el-form-item>
         </el-form>
 </template>
@@ -53,6 +50,7 @@
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.newEvent.user_id = localStorage.getItem('user_id');
                         this.axios.post(uri, this.newEvent).then(() => {
                             this.$notify({
                                 title: 'Success',

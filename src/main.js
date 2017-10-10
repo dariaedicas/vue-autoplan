@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -11,6 +9,18 @@ import formatDate from './filters/formatDateFilter'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import locale from '../static/langs/en'
+import VueAuthenticate from 'vue-authenticate'
+
+Vue.use(VueAxios, axios)
+Vue.use(VueAuthenticate, {
+    baseUrl: process.env.API_SERVER, // Your API domain
+    providers: {
+        facebook: {
+            clientId: '345616405903288',
+            redirectUri: 'http://localhost:8080/auth/callback' // Your client app URL
+        }
+    }
+})
 Vue.use(VueAxios, axios);
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false
