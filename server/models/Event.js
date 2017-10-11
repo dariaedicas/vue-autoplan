@@ -17,7 +17,10 @@ var Event = new Schema({
   },
   is_done: {
     type: Boolean, default: false
-  }
+  },
+    user_id: {
+        type: String
+    }
 },{
   collection: 'events'
 });

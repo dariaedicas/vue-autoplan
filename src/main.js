@@ -11,8 +11,16 @@ import 'bootstrap/dist/css/bootstrap.css'
 import locale from '../static/langs/en'
 
 Vue.use(VueAxios, axios)
-
-Vue.use(VueAxios, axios);
+axios.defaults.withCredentials = true;
+axios.interceptors.response.use((response) => {
+    return response
+}, (error) => {
+    if (error.response.status===403 && error.response.data.error==='login') {
+        router.push('login');
+    } else {
+        return Promise.reject(error)
+    }
+})
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false
 Vue.filter('formatDate', formatDate)

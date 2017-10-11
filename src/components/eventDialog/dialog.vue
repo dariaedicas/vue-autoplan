@@ -50,7 +50,10 @@
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.axios.post(uri, this.newEvent).then(() => {
+                        this.axios.post(uri, this.newEvent).then((resp) => {
+                            if(!resp){
+                                return false;
+                            }
                             this.$notify({
                                 title: 'Success',
                                 message: this.newEvent.title + ' was ' + action + 'd',
@@ -59,7 +62,6 @@
                             this.$emit('closeDialog');
                             this.$emit('updateItems');
                         }).catch((er) => {
-                            console.log(er);
                             this.$notify({
                                 title: 'Error',
                                 message: "Can't " + action,

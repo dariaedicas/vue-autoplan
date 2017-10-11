@@ -1,70 +1,69 @@
 <template>
-    <div class="hello row">
-        <div class="col-md-8">
-        <div id="pin"></div>
-        <div class="plans">
-            <div class="plans-header">
-                <div id="todo"></div>
-                <i class="el-icon-plus create-event custom-icon" @click="eventDialogVisible = true"></i>
-                <i v-if="isFuture" class="el-icon-d-arrow-left future-events custom-icon" @click="fetchItems()"></i>
-                <i v-if="!isFuture" class="el-icon-d-arrow-right future-events custom-icon" @click="showFuture()"></i>
-            </div>
-            <transition-group name="list" tag="ul" class="list-group">
-                <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
-                    v-bind:class="{expired: new Date(event.datetime) < new Date(),
+        <div class="hello row" v-if="dataLoaded">
+            <div v-if="!dataLoaded">Loading...</div>
+            <div class="col-md-12">
+            <div id="pin"></div>
+            <div class="plans">
+                <div class="plans-header">
+                    <div id="todo"></div>
+                    <i class="el-icon-plus create-event custom-icon" @click="eventDialogVisible = true"></i>
+                    <i v-if="isFuture" class="el-icon-d-arrow-left future-events custom-icon" @click="fetchItems()"></i>
+                    <i v-if="!isFuture" class="el-icon-d-arrow-right future-events custom-icon"
+                       @click="showFuture()"></i>
+                </div>
+                <transition-group name="list" tag="ul" class="list-group">
+                    <li :key="event._id" class="list-group-item event-item" v-for="(event, index) in events"
+                        v-bind:class="{expired: new Date(event.datetime) < new Date(),
                         'expired-today': isExpiredToday(event)}">
-                    <i class="el-icon-information"></i>
-                    <el-checkbox v-model="event.is_done" class="event-title"
-                                 v-bind:class="{done: event.is_done }"
-                                 @change="done(event)">
-                    </el-checkbox>
-                    <span class="title">
+                        <i class="el-icon-information"></i>
+                        <el-checkbox v-model="event.is_done" class="event-title"
+                                     v-bind:class="{done: event.is_done }"
+                                     @change="done(event)">
+                        </el-checkbox>
+                        <span class="title">
                         <span v-if="isToday(event)" class="date">{{event.datetime | formatDate('HH:mm')}} </span>
                         <span v-if="!isToday(event)" class="date">{{event.datetime | formatDate('DD-MM-YYYY')}}</span>
                         - {{ event.title }}
                         </span>
-                    <div class="controls">
-                        <el-button class="el-icon-edit" @click="edit(event)"></el-button>
-                        <el-button class="el-icon-delete" @click="deleteEvent(event, index)"></el-button>
-                    </div>
-                </li>
-            </transition-group>
-        </div>
-        </div>
-        <div class="col-md-4">
-
-    </div>
-        <el-dialog
-                :custom-class="'create-event-dialog'"
-                :visible.sync="eventDialogVisible"
-                size="tiny"
-                :before-close="handleEventDialogClose">
-            <event-dialog
-                    :editing="editing"
-                    :newEvent="newEvent"
-                    v-on:updateItems="fetchItems"
-                    v-on:closeDialog="handleEventDialogClose">
-            </event-dialog>
-        </el-dialog>
-        <el-dialog
-                :title="'Have '+doneEvent.title + ' is done by?'"
-                :visible.sync="dialogVisible"
-                size="tiny"
-                :before-close="handleDoneClose">
-            <el-form ref="doneDatetime">
-                <el-form-item prop="doneDatetime" required>
-                    <el-date-picker type="datetime" v-model="doneDatetime"
-                                    format="dd-MM-yyyy HH:mm"
-                                    :clearable="false"
-                                    :picker-options="{firstDayOfWeek: 1}">
-                    </el-date-picker>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
+                        <div class="controls">
+                            <el-button class="el-icon-edit" @click="edit(event)"></el-button>
+                            <el-button class="el-icon-delete" @click="deleteEvent(event, index)"></el-button>
+                        </div>
+                    </li>
+                </transition-group>
+            </div>
+            <el-dialog
+                    :custom-class="'create-event-dialog'"
+                    :visible.sync="eventDialogVisible"
+                    size="tiny"
+                    :before-close="handleEventDialogClose">
+                <event-dialog
+                        :editing="editing"
+                        :newEvent="newEvent"
+                        v-on:updateItems="fetchItems"
+                        v-on:closeDialog="handleEventDialogClose">
+                </event-dialog>
+            </el-dialog>
+            <el-dialog
+                    :title="'Have '+doneEvent.title + ' is done by?'"
+                    :visible.sync="dialogVisible"
+                    size="tiny"
+                    :before-close="handleDoneClose">
+                <el-form ref="doneDatetime">
+                    <el-form-item prop="doneDatetime" required>
+                        <el-date-picker type="datetime" v-model="doneDatetime"
+                                        format="dd-MM-yyyy HH:mm"
+                                        :clearable="false"
+                                        :picker-options="{firstDayOfWeek: 1}">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
                 <el-button @click="handleDoneClose()">Cancel</el-button>
                 <el-button type="primary" @click="confirmDoneDate()">Confirm</el-button>
             </span>
-        </el-dialog>
+            </el-dialog>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -85,7 +84,7 @@
                 }
             }
         },
-        name: 'hello',
+        name: 'Main',
         data () {
             return {
                 eventDialogVisible: false,
@@ -102,7 +101,8 @@
                 doneEvent: false,
                 doneDatetime: new Date(),
                 events: [],
-                isFuture: false
+                isFuture: false,
+                dataLoaded: false
             }
         },
         created: function () {
@@ -110,9 +110,9 @@
         },
         methods: {
             handleEventDialogClose(){
-                this.eventDialogVisible=false;
-                this.editing=false;
-                this.newEvent={
+                this.eventDialogVisible = false;
+                this.editing = false;
+                this.newEvent = {
                     title: '',
                     description: '',
                     period: 0,
@@ -126,8 +126,11 @@
                 return new Date(event.datetime) < new Date() && new Date(event.datetime) >= this.start
             },
             showFuture: function () {
-                let uri = process.env.API_SERVER+'events/future';
+                let uri = process.env.API_SERVER + 'events/future';
                 this.axios.get(uri).then((response) => {
+                    if(!response){
+                        return false;
+                    }
                     this.events = response.data;
                     this.isFuture = true;
                 }).catch(() => {
@@ -143,9 +146,13 @@
             },
 
             fetchItems(){
-                let uri = process.env.API_SERVER+'events';
+                let uri = process.env.API_SERVER + 'events';
                 this.axios.get(uri).then((response) => {
+                    if(!response){
+                        return false;
+                    }
                     this.events = response.data;
+                    this.dataLoaded = true;
                     this.isFuture = false;
                 }).catch(() => {
                     this.$notify({
@@ -167,8 +174,11 @@
                 this.dialogVisible = false;
                 let event = this.doneEvent;
                 this.doneEvent.done_datetime = this.doneDatetime;
-                let uri = process.env.API_SERVER+'events/done/' + event._id;
-                this.axios.post(uri, event).then(() => {
+                let uri = process.env.API_SERVER + 'events/done/' + event._id;
+                this.axios.post(uri, event).then((resp) => {
+                    if(!resp){
+                        return false;
+                    }
                     this.$notify({
                         title: 'Done',
                         message: event.title + ' was done',
@@ -202,8 +212,11 @@
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
-                    let uri = process.env.API_SERVER+'events/delete/' + event._id;
-                    this.axios.get(uri).then(() => {
+                    let uri = process.env.API_SERVER + 'events/delete/' + event._id;
+                    this.axios.get(uri).then((resp) => {
+                        if(!resp){
+                            return false;
+                        }
                         this.events.splice(idx, 1);
                         this.$notify({
                             title: 'Removed',
