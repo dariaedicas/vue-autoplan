@@ -18,10 +18,9 @@ eventRoutes.route('/add').post(function (req, res) {
       res.status(400).send("unable to save to database");
     });
 });
-eventRoutes.route('/future/:user_id').get(function (req, res) {
-  var user_id = req.params.user_id;
+eventRoutes.route('/future').get(function (req, res) {
   var end = moment().endOf('day');
-  Event.find({"datetime": {$gt: end}, "user_id": user_id},
+  Event.find({"datetime": {$gt: end}},
     function (err, events) {
       if (err) {
         console.log(err);
@@ -31,10 +30,9 @@ eventRoutes.route('/future/:user_id').get(function (req, res) {
       }
     }).sort({"datetime": 1});
 });
-eventRoutes.route('/:user_id').get(function (req, res) {
+eventRoutes.route('/').get(function (req, res) {
   var end = moment().endOf('day');
-  var user_id = req.params.user_id;
-  Event.find({"datetime": {$lte: end}, is_done: false, "user_id": user_id},
+  Event.find({"datetime": {$lte: end}, is_done: false},
     function (err, events) {
       if (err) {
         console.log(err);

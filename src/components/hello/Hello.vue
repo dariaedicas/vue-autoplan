@@ -5,7 +5,7 @@
         <div class="plans">
             <div class="plans-header">
                 <div id="todo"></div>
-                <i v-if="isAuthenticated" class="el-icon-plus create-event custom-icon" @click="eventDialogVisible = true"></i>
+                <i class="el-icon-plus create-event custom-icon" @click="eventDialogVisible = true"></i>
                 <i v-if="isFuture" class="el-icon-d-arrow-left future-events custom-icon" @click="fetchItems()"></i>
                 <i v-if="!isFuture" class="el-icon-d-arrow-right future-events custom-icon" @click="showFuture()"></i>
             </div>
@@ -32,8 +32,7 @@
         </div>
         </div>
         <div class="col-md-4">
-            <button @click="authenticate('facebook')" v-if="!isAuthenticated">Login with Facebook</button>
-            <button @click="logout()" v-if="isAuthenticated">Logout</button>
+
     </div>
         <el-dialog
                 :custom-class="'create-event-dialog'"
@@ -89,7 +88,6 @@
         name: 'hello',
         data () {
             return {
-                isAuthenticated: this.$auth.isAuthenticated(),
                 eventDialogVisible: false,
                 editing: false,
                 newEvent: {
@@ -111,28 +109,6 @@
             this.fetchItems();
         },
         methods: {
-            authenticate(provider){
-                this.$auth.authenticate(provider).then((response) => {
-                    return this.axios.get('https://graph.facebook.com/v2.4/me', {
-                        params: {
-                            access_token: response.data.access_token,
-                            fields: 'id,name,short_name,name_format,first_name,middle_name,last_name,gender,email,verified,is_verified,cover,picture,timezone,currency,locale,age_range,updated_time,link,devices,is_shared_login,can_review_measurement_request',
-                        },
-                    })
-                }).then((response) => {
-                    this.isAuthenticated =true;
-                    localStorage.setItem('user_id', response.data.id);
-                    this.fetchItems();
-                }).catch(function (err) {
-
-                })
-            },
-            logout() {
-                this.isAuthenticated =false;
-                this.$auth.logout();
-                localStorage.removeItem('user_id');
-                this.fetchItems();
-            },
             handleEventDialogClose(){
                 this.eventDialogVisible=false;
                 this.editing=false;
@@ -150,10 +126,7 @@
                 return new Date(event.datetime) < new Date() && new Date(event.datetime) >= this.start
             },
             showFuture: function () {
-                if(!this.getUserId()){
-                    return;
-                }
-                let uri = process.env.API_SERVER+'events/future/'+this.getUserId();
+                let uri = process.env.API_SERVER+'events/future';
                 this.axios.get(uri).then((response) => {
                     this.events = response.data;
                     this.isFuture = true;
@@ -168,23 +141,9 @@
             moment: function () {
                 return moment()
             },
-            getUserId: function(){
-                if(!localStorage.getItem('user_id')){
-                    this.$notify({
-                        title: 'Error',
-                        message: 'Please log in!',
-                        type: 'error'
-                    });
-                    return false;
-                } else{
-                    return localStorage.getItem('user_id');
-                }
-            },
+
             fetchItems(){
-                if(!this.getUserId()){
-                    return;
-                }
-                let uri = process.env.API_SERVER+'events/'+this.getUserId();
+                let uri = process.env.API_SERVER+'events';
                 this.axios.get(uri).then((response) => {
                     this.events = response.data;
                     this.isFuture = false;

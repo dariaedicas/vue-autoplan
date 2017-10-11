@@ -50,7 +50,6 @@
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.newEvent.user_id = localStorage.getItem('user_id');
                         this.axios.post(uri, this.newEvent).then(() => {
                             this.$notify({
                                 title: 'Success',
