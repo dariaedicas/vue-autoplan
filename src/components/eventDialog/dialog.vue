@@ -17,6 +17,7 @@
             <el-input-number v-model="newEvent.period" :controls="false"></el-input-number>
             days
         </el-form-item>
+        <div class="clearfix"></div>
         <el-button type="success" class="create-event-form-item" @click="createEvent('formEvent')">Create</el-button>
         <div class="clearfix"></div>
     </el-form>

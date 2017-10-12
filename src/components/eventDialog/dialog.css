@@ -10,7 +10,7 @@
 }
 .create-event-dialog .create-event-form-item{
     font: 15px 'comic_reliefregular';
-    margin: 10px -35px 15px;
+    margin: 25px -35px 15px;
     display: block;
     float: right;
     width: 80px;
@@ -51,8 +51,9 @@
     width: auto;
 }
 .period{
-
+    float: right;
     text-align: right;
+    margin-right: -15px;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color:  #48576a;
@@ -87,7 +88,7 @@
         right: 30px;
     }
     .create-event-dialog .create-event-form-item{
-        margin: 0px -15px 15px;
+        margin: 10px -15px 15px;
     }
 
 }
