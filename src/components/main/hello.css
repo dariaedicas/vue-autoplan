@@ -184,3 +184,46 @@ label{
   margin-right: 20px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+  }
+
+  .col-md-12 {
+    padding: 0;
+  }
+
+  .plans {
+    border-width: 10px;
+    padding-top: 40px;
+  }
+  .list-group-item{
+    padding: 5px;
+  }
+  .controls .el-button {
+    border: none;
+    padding: 10px 0px;
+  }
+  .controls .el-icon-edit{
+    display: none;
+  }
+  .el-dialog--tiny{
+    width: 100%;
+    max-width: 360px;
+  }
+  .el-dialog__body {
+    padding: 10px 20px 0;
+  }
+
+  .el-notification{
+    right: 0;
+  }
+
+  .title {
+    vertical-align: middle;
+    max-width: calc(100% - 70px);
+    display: inline-block;
+    margin-right: -20px;
+  }
+}

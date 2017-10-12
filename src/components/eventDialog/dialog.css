@@ -66,3 +66,26 @@
     color:  #48576a;
     font: 16px 'nautilus_pompiliusregular';
 }
+
+@media (max-width: 768px) {
+    .create-event-dialog.el-dialog {
+        width: 320px;
+        top: 0!important;
+    }
+    .create-event-dialog .el-dialog__body{
+        padding: 5px;
+    }
+    .event-form{
+        padding: 45px 30px 0px;
+    }
+    .create-event-dialog .el-dialog__headerbtn {
+        top: 35px;
+        right: 30px;
+    }
+    .period {
+        margin-top: 5px;
+    }
+    .create-event-dialog i.create-event-form-item{
+        right: -70px;
+    }
+}
