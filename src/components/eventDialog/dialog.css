@@ -5,19 +5,16 @@
 .create-event-dialog .el-dialog__body{
     padding: 10px 20px;
 }
-.create-event-dialog  .datetime{
+.create-event-dialog .datetime{
     float: left;
 }
-.create-event-dialog i.create-event-form-item{
-    color: white;
-    background: rgb(5, 218, 51);
-    padding: 7px;
-    border-radius: 50%;
-    border: 2px solid #13ce66;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: -80px;
+.create-event-dialog .create-event-form-item{
+    font: 15px 'comic_reliefregular';
+    margin: 10px -35px 15px;
+    display: block;
+    float: right;
+    width: 80px;
+    padding: 5px 10px;
 }
 .create-event-dialog .el-dialog__headerbtn{
     top: 45px;
@@ -30,9 +27,13 @@
 .create-event-dialog  .el-dialog__headerbtn .el-dialog__close{
     color: rgb(255, 113, 25);
     background: white;
-    padding: 7px;
+    padding: 5px;
+    font-size: 14px;
     border-radius: 50%;
     border: 2px solid #f7ba2a;
+}
+.create-event-dialog  .el-dialog__headerbtn .el-dialog__close:hover{
+    padding: 6px;
 }
 .create-event-dialog .el-dialog__header{
     padding: 0;
@@ -44,10 +45,13 @@
     margin-bottom: 10px;
 }
 .period .el-input-number .el-input__inner{
-    width: 125px;
+    width: 50px;
+}
+.period  .el-input-number{
+    width: auto;
 }
 .period{
-    margin-top: 20px;
+
     text-align: right;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -82,10 +86,8 @@
         top: 35px;
         right: 30px;
     }
-    .period {
-        margin-top: 5px;
+    .create-event-dialog .create-event-form-item{
+        margin: 0px -15px 15px;
     }
-    .create-event-dialog i.create-event-form-item{
-        right: -70px;
-    }
+
 }

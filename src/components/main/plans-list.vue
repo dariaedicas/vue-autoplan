@@ -52,6 +52,8 @@
             </event-dialog>
         </el-dialog>
         <el-dialog
+                :show-close="false"
+                :custom-class="'confirm-dialog'"
                 :title="'Have '+doneEvent.title + ' is done by?'"
                 :visible.sync="dialogVisible"
                 size="tiny"

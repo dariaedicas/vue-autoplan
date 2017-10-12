@@ -1,239 +1,311 @@
 @font-face {
-  font-family: 'comic_reliefregular';
-  src: url('../../assets/fonts/comicrelief-webfont.eot');
-  src: url('../../assets/fonts/comicrelief-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../../assets/fonts/comicrelief-webfont.woff2') format('woff2'),
-  url('../../assets/fonts/comicrelief-webfont.woff') format('woff'),
-  url('../../assets/fonts/comicrelief-webfont.ttf') format('truetype'),
-  url('../../assets/fonts/comicrelief-webfont.svg#comic_reliefregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'comic_reliefregular';
+    src: url('../../assets/fonts/comicrelief-webfont.eot');
+    src: url('../../assets/fonts/comicrelief-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../../assets/fonts/comicrelief-webfont.woff2') format('woff2'),
+    url('../../assets/fonts/comicrelief-webfont.woff') format('woff'),
+    url('../../assets/fonts/comicrelief-webfont.ttf') format('truetype'),
+    url('../../assets/fonts/comicrelief-webfont.svg#comic_reliefregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'nautilus_pompiliusregular';
-  src: url('../../assets/fonts/nautilus-webfont.eot');
-  src: url('../../assets/fonts/nautilus-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../../assets/fonts/nautilus-webfont.woff2') format('woff2'),
-  url('../../assets/fonts/nautilus-webfont.woff') format('woff'),
-  url('../../assets/fonts/nautilus-webfont.ttf') format('truetype'),
-  url('../../assets/fonts/nautilus-webfont.svg#nautilus_pompiliusregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'nautilus_pompiliusregular';
+    src: url('../../assets/fonts/nautilus-webfont.eot');
+    src: url('../../assets/fonts/nautilus-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../../assets/fonts/nautilus-webfont.woff2') format('woff2'),
+    url('../../assets/fonts/nautilus-webfont.woff') format('woff'),
+    url('../../assets/fonts/nautilus-webfont.ttf') format('truetype'),
+    url('../../assets/fonts/nautilus-webfont.svg#nautilus_pompiliusregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
 }
-*{
-  outline: none;
+
+* {
+    outline: none;
 }
-body{
-  font: 16px 'comic_reliefregular';
-  color: #24282b;
+
+body {
+    font: 16px 'comic_reliefregular';
+    color: #24282b;
 }
-.plans{
-  width: 100%;
+
+.plans {
+    width: 100%;
 }
-.el-form-item__label{
-  font: 16px 'nautilus_pompiliusregular';
+
+.el-form-item__label {
+    font: 16px 'nautilus_pompiliusregular';
 }
-.event-title .el-checkbox__label{
-  overflow: hidden;
-  padding: 0 5px;
-  line-height: 22px;
-  font: 16px 'comic_reliefregular';
+
+.event-title .el-checkbox__label {
+    overflow: hidden;
+    padding: 0 5px;
+    line-height: 22px;
+    font: 16px 'comic_reliefregular';
 }
-.el-checkbox{
-  overflow: hidden;
+
+.el-checkbox {
+    overflow: hidden;
 }
-.event-title  .el-checkbox__input{
-  margin-right: 10px;
+
+.event-title .el-checkbox__input {
+    margin-right: 10px;
 }
-.event-title{
-  margin: 0;
+
+.event-title {
+    margin: 0;
 }
+
 .event-title .el-checkbox__label::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  margin-top: -2px;
-  right: 100%;
-  width: 100%;
-  height: 4px;
-  background: #eb2141;
-}
-.event-title.done .el-checkbox__label::after {
-  right: 0%;
-  transition: all .3s;
-  transition-delay: .2s;
-}
-.event-title .el-checkbox__label::after{
-  -webkit-transition: all 0.0s ;
-  -moz-transition: all 0.0s ;
-  -o-transition: all 0.0s ;
-  transition: all 0.0s;
-}
-.plans{
-  border: 15px solid rgba(125, 89, 49, 0.44);
-  padding-top: 30px;
-}
-.plans .list-group{
-  display: block;
-  max-height: 600px;
-  overflow: auto;
-  padding-bottom: 35px;
-}
-#pin{
-  background: url('../../assets/images/pin.png') top center no-repeat;
-  height: 100px;
-  background-size: contain;
-  margin-bottom: -45px;
-  position: relative;
-  z-index: 1;
-}
-#todo{
-  background: url('../../assets/images/todo.png') top center no-repeat;
-  height: 50px;
-  width: 100px;
-  margin-left: 15%;
-  margin-bottom: 15px;
-  background-size: contain;
-  float: left;
-}
-.list-group-item{
-  border-right: none;
-  border-left: none;
-  padding: 5px 20px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -2px;
+    right: 100%;
+    width: 100%;
+    height: 4px;
+    background: #eb2141;
 }
 
-.el-checkbox{
-  color: inherit;
- }
-.controls{
-  float: right;
+.event-title.done .el-checkbox__label::after {
+    right: 0%;
+    transition: all .3s;
+    transition-delay: .2s;
 }
-.event-form{
-  background: url('../../assets/images/note.png') no-repeat;
-  background-size: 100%;
-  padding: 60px 40px 10px;
+
+.event-title .el-checkbox__label::after {
+    -webkit-transition: all 0.0s;
+    -moz-transition: all 0.0s;
+    -o-transition: all 0.0s;
+    transition: all 0.0s;
 }
-i.custom-icon{
-  border-radius: 50%;
-  padding: 7px;
-  background: white;
-  border: 2px solid white;
+
+.plans {
+    border: 15px solid rgba(125, 89, 49, 0.44);
+    padding-top: 30px;
 }
-i.custom-icon:hover{
-  border-radius: 50%;
-  padding: 7px;
-  color:#007bff;
-  border: 2px solid #27a9ff;
+
+.plans .list-group {
+    display: block;
+    max-height: 600px;
+    overflow: auto;
+    padding-bottom: 35px;
 }
-label{
-  margin-bottom: 0px;
+
+#pin {
+    background: url('../../assets/images/pin.png') top center no-repeat;
+    height: 100px;
+    background-size: contain;
+    margin-bottom: -45px;
+    position: relative;
+    z-index: 1;
 }
-.create-event-dialog .el-textarea__inner{
-  height: 80px;
-  resize: none;
+
+#todo {
+    background: url('../../assets/images/todo.png') top center no-repeat;
+    height: 50px;
+    width: 100px;
+    margin-left: 15%;
+    margin-bottom: 15px;
+    background-size: contain;
+    float: left;
 }
-.el-button+.el-button {
+
+.list-group-item {
+    border-right: none;
+    border-left: none;
+    padding: 5px 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.el-checkbox {
+    color: inherit;
+}
+
+.controls {
+    float: right;
+}
+
+.event-form {
+    background: url('../../assets/images/note.png') no-repeat;
+    background-size: 100%;
+    padding: 60px 40px 10px;
+}
+
+i.custom-icon {
+    border-radius: 50%;
+    padding: 7px;
+    background: white;
+    border: 2px solid white;
+}
+
+i.custom-icon:hover {
+    border-radius: 50%;
+    padding: 7px;
+    color: #007bff;
+    border: 2px solid #27a9ff;
+}
+
+label {
+    margin-bottom: 0px;
+}
+
+.create-event-dialog .el-textarea__inner {
+    height: 80px;
+    resize: none;
+}
+
+.el-button + .el-button {
     margin-left: 5px;
 }
-.el-button{
-  padding: 8px 10px;
+
+.el-button {
+    padding: 8px 10px;
 }
 
-.event-item .el-icon-information{
-  color:transparent;
-  font-size: 12px;
-  vertical-align: top;
+.event-item .el-icon-information {
+    color: transparent;
+    font-size: 12px;
+    vertical-align: top;
 }
-.event-item.expired .el-icon-information{
-  color: #ff4949;
+
+.event-item.expired .el-icon-information {
+    color: #ff4949;
 }
-.event-item.expired-today .el-icon-information{
-  color: #f7ba2a;
- }
-.event-item label, .event-item i{
-  vertical-align: middle;
+
+.event-item.expired-today .el-icon-information {
+    color: #f7ba2a;
 }
+
+.event-item label, .event-item i {
+    vertical-align: middle;
+}
+
 .list-leave-active {
-  transition: all 0.5s;
-  opacity: 0;
+    transition: all 0.5s;
+    opacity: 0;
 }
-.list-group-item:last-child{
-  border-radius: 0;
+
+.list-group-item:last-child {
+    border-radius: 0;
 }
-.date{
-  font: 12px "Arial";
+
+.date {
+    font: 12px "Arial";
 }
-.title{
-  vertical-align: middle;
+
+.title {
+    vertical-align: middle;
 }
-.plans-header{
-  overflow: auto;
+
+.plans-header {
+    overflow: auto;
 }
-.create-event{
-  float: left;
-  cursor: pointer;
-  margin-top: 4px;
+
+.create-event {
+    float: left;
+    cursor: pointer;
+    margin-top: 4px;
 }
-.future-events{
-  margin-top: 4px;
-  float: right;
-  margin-right: 20px;
-  cursor: pointer;
+
+.future-events {
+    margin-top: 4px;
+    float: right;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.event-form .el-date-editor.el-input {
+    width: 125px;
+}
+
+.el-dialog.confirm-dialog .el-dialog__body {
+    padding: 10px 20px 0;
+}
+
+.el-dialog.confirm-dialog .el-dialog__body .el-form-item {
+    margin-bottom: 5px;
+}
+
+.el-dialog.confirm-dialog .el-dialog__title {
+    font-weight: normal;
 }
 
 @media (max-width: 768px) {
- .container {
-    padding: 0!important;
-  }
-  #todo{
-    margin-left: 20px;
-    margin-bottom: 10px;
-  }
+    .el-message-box__wrapper .el-message-box {
+        width: 320px;
+    }
 
-  #app .col-md-12 {
-    padding: 0;
-  }
-  .controls{
-    vertical-align: middle;
-    display: inline-block;
-    float: none;
-  }
-  .plans {
-    border-width: 10px;
-    padding-top: 50px;
-  }
-  .list-group-item{
-    padding: 5px;
-  }
-  .controls .el-button {
-    border: none;
-    padding: 5px;
-  }
-  .controls .el-icon-edit{
-    display: none;
-  }
-  .el-dialog--tiny{
-    width: 100%;
-    max-width: 360px;
-  }
-  .el-dialog__body {
-    padding: 10px 20px 0;
-  }
+    .el-message-box__wrapper .el-message-box__content {
+        padding: 25px 15px 10px;
+    }
 
-  .el-notification{
-    right: 0;
-  }
+    .container {
+        padding: 0 !important;
+    }
 
-  .title {
-    vertical-align: middle;
-    max-width: calc(100% - 70px);
-    display: inline-block;
-    margin-right: -20px;
-    word-wrap: break-word;
-    padding-right: 10px;
-  }
+    #todo {
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
+
+    #app .col-md-12 {
+        padding: 0;
+    }
+
+    .controls {
+        vertical-align: middle;
+        display: inline-block;
+        float: none;
+    }
+
+    .plans {
+        border-width: 10px;
+        padding-top: 50px;
+    }
+
+    .event-item.list-group-item {
+        padding: 5px;
+    }
+
+    .controls .el-button + .el-button {
+        margin-left: 0px;
+    }
+
+    .event-title .el-checkbox__input {
+        margin-right: 5px;
+    }
+
+    .controls .el-button {
+        border: none;
+        padding: 5px;
+        font-size: 16px;
+    }
+
+    .controls .el-icon-edit {
+        display: none;
+    }
+
+    .el-dialog.confirm-dialog {
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .el-notification {
+        right: 0 !important;
+    }
+
+    .event-item .title {
+        vertical-align: middle;
+        width: calc(100% - 60px);
+        display: inline-block;
+        margin-right: -20px;
+        word-wrap: break-word;
+        padding-right: 10px;
+    }
+
 }

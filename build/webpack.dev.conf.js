@@ -4,7 +4,11 @@ var config = require('../config')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
+var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -21,6 +25,14 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
+      new ExtractTextPlugin({
+          filename: utils.assetsPath('css/[name].[contenthash].css')
+      }),
+      new OptimizeCSSPlugin({
+          cssProcessorOptions: {
+              safe: true
+          }
+      }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

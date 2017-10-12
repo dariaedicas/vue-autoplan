@@ -1,25 +1,25 @@
 <template>
-        <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="event-form">
-            <el-form-item label='Title' prop="title" required class="title">
-                <el-input v-model="newEvent.title" placeholder="Title"></el-input>
-            </el-form-item>
-            <el-form-item prop="description">
-                <el-input type="textarea" v-model="newEvent.description" placeholder="Description"></el-input>
-            </el-form-item>
-            <el-form-item class="datetime" label="Should be done by" prop="datetime" required>
-                <el-date-picker type="datetime" v-model="newEvent.datetime"
-                                format="dd-MM-yyyy HH:mm"
-                                :clearable="false"
-                                :picker-options="{firstDayOfWeek: 1}">
-                </el-date-picker>
-                <i class="el-icon-check create-event-form-item" @click="createEvent('formEvent')"></i>
-            </el-form-item>
-            <div class="clearfix"></div>
-            <el-form-item label="Repeat every" prop="period" class="period">
-                <el-input-number v-model="newEvent.period"></el-input-number>
-                days
-            </el-form-item>
-        </el-form>
+    <el-form :model="newEvent" :rules="rules" ref="formEvent" label-position="top" class="event-form">
+        <el-form-item label='Title' prop="title" required class="title">
+            <el-input v-model="newEvent.title" placeholder="Title"></el-input>
+        </el-form-item>
+        <el-form-item prop="description">
+            <el-input type="textarea" v-model="newEvent.description" placeholder="Description"></el-input>
+        </el-form-item>
+        <el-form-item class="datetime" label="Should be done by" prop="datetime" required>
+            <el-date-picker type="datetime" v-model="newEvent.datetime"
+                            format="dd-MM-yyyy HH:mm"
+                            :clearable="false"
+                            :picker-options="{firstDayOfWeek: 1}">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="Repeat every" prop="period" class="period">
+            <el-input-number v-model="newEvent.period" :controls="false"></el-input-number>
+            days
+        </el-form-item>
+        <el-button type="success" class="create-event-form-item" @click="createEvent('formEvent')">Create</el-button>
+        <div class="clearfix"></div>
+    </el-form>
 </template>
 
 <script type="text/ecmascript-6">
@@ -42,16 +42,16 @@
         },
         methods: {
             createEvent(formName) {
-                let uri = process.env.API_SERVER+'events/add';
+                let uri = process.env.API_SERVER + 'events/add';
                 let action = 'create';
                 if (this.newEvent._id) {
-                    uri = process.env.API_SERVER+'events/update/' + this.newEvent._id;
+                    uri = process.env.API_SERVER + 'events/update/' + this.newEvent._id;
                     action = 'update';
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.axios.post(uri, this.newEvent).then((resp) => {
-                            if(!resp){
+                            if (!resp) {
                                 return false;
                             }
                             this.$notify({
