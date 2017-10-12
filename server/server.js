@@ -5,6 +5,7 @@ const express = require('express'),
   cors = require('cors'),
   mongoose = require('mongoose'),
   config = require('../config/DB'),
+    serverConfig=require('../config/server-config'),
   eventRoutes = require('./expressRoutes/eventRoutes');
 var session = require('express-session');
 var passport = require('passport');
@@ -20,7 +21,7 @@ const app = express();
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(cors({credentials: true, origin: 'http://localhost:8080'}));
+app.use(cors({credentials: true, origin: serverConfig.CLIENT_URL}));
 app.use(session({
     secret: 'k76hgj021hh3k24k3f5',
     resave: true,
