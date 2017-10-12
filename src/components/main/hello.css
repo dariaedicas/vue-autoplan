@@ -186,24 +186,32 @@ label{
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 0;
+ .container {
+    padding: 0!important;
+  }
+  #todo{
+    margin-left: 20px;
+    margin-bottom: 10px;
   }
 
-  .col-md-12 {
+  #app .col-md-12 {
     padding: 0;
   }
-
+  .controls{
+    vertical-align: middle;
+    display: inline-block;
+    float: none;
+  }
   .plans {
     border-width: 10px;
-    padding-top: 40px;
+    padding-top: 50px;
   }
   .list-group-item{
     padding: 5px;
   }
   .controls .el-button {
     border: none;
-    padding: 10px 0px;
+    padding: 5px;
   }
   .controls .el-icon-edit{
     display: none;
@@ -225,5 +233,7 @@ label{
     max-width: calc(100% - 70px);
     display: inline-block;
     margin-right: -20px;
+    word-wrap: break-word;
+    padding-right: 10px;
   }
 }
